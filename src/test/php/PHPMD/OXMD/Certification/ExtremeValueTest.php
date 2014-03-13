@@ -44,27 +44,24 @@
 
 namespace PHPMD\OXMD\Certification;
 
-use PHPMD\OXMD\Stubs\ExtremeValuesStub;
-
-class CertificationCostTest extends \PHPUnit_Framework_TestCase
+abstract class ExtremeValueTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @test
-     * @dataProvider get_factor_and_cost
+     * @param int|float $value
+     * @param int|float $threshold
+     * @return \PHPMD\OXMD\Certification\ExtremeValue
      */
-    public function calculates_expected_certification_cost($factor, $expected)
+    protected function create_extreme_value($value, $threshold)
     {
-        $cost = new CertificationCost();
-        $extremes = new ExtremeValuesStub($factor);
+        $mock = $this->getMockBuilder(substr(get_class($this), 0, -4))
+            ->setConstructorArgs(array($threshold))
+            ->setMethods(array('getValue'))
+            ->getMock();
 
-        $this->assertEquals($expected, $cost->calculate($extremes), '', 0.00001);
-    }
+        $mock->expects($this->atLeastOnce())
+            ->method('getValue')
+            ->will($this->returnValue($value));
 
-    public function get_factor_and_cost()
-    {
-        return array(
-            array(1, 319),
-            array(45, 9119),
-        );
+        return $mock;
     }
 }

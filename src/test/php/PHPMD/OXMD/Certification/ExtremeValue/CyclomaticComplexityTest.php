@@ -42,29 +42,50 @@
  * @version   @project.version@
  */
 
-namespace PHPMD\OXMD\Certification;
+namespace PHPMD\OXMD\Certification\ExtremeValue;
 
-use PHPMD\OXMD\Stubs\ExtremeValuesStub;
+use PHPMD\OXMD\Certification\ExtremeValueTest;
 
-class CertificationCostTest extends \PHPUnit_Framework_TestCase
+class CyclomaticComplexityTest extends ExtremeValueTest
 {
     /**
      * @test
-     * @dataProvider get_factor_and_cost
+     * @dataProvider get_factor_and_threshold
      */
-    public function calculates_expected_certification_cost($factor, $expected)
+    public function factor_calculation($value, $threshold, $expected)
     {
-        $cost = new CertificationCost();
-        $extremes = new ExtremeValuesStub($factor);
+        $extremeValue = $this->create_extreme_value($value, $threshold);
 
-        $this->assertEquals($expected, $cost->calculate($extremes), '', 0.00001);
+        $this->assertEquals($expected, $extremeValue->getFactor(), '', 0.00001);
     }
 
-    public function get_factor_and_cost()
+    public function get_factor_and_threshold()
     {
         return array(
-            array(1, 319),
-            array(45, 9119),
+            array(50, null, 47),
+            array(25, null, 22),
+            array(10, null, 7),
+            array(5, null, 2),
+            array(4, null, 1),
+            array(3, null, 1),
+            array(2, null, 1),
+            array(1, null, 1),
+            array(0, null, 1),
+
+            array(25, 10, 16),
+            array(11, 10, 2),
+            array(10, 10, 1),
+            array(9, 10, 1),
         );
+    }
+
+    /**
+     * @param int|float $value
+     * @param int|float $threshold
+     * @return \PHPMD\OXMD\Certification\ExtremeValue\CyclomaticComplexity
+     */
+    protected function create_extreme_value($value, $threshold)
+    {
+        return parent::create_extreme_value($value, $threshold);
     }
 }
