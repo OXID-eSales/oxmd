@@ -49,6 +49,11 @@ use PHPMD\OXMD\Certification\ExtremeValue;
 /**
  * This class encapsulates the cyclomatic complexity extreme value and the
  * associated certification factor calculation.
+ *
+ * @author    Manuel Pichler <mapi@phpmd.org>
+ * @copyright 2014 Manuel Pichler. All rights reserved.
+ * @license   http://www.opensource.org/licenses/bsd-license.php BSD License
+ * @version   @project.version@
  */
 class CyclomaticComplexity extends ExtremeValue
 {

@@ -45,12 +45,10 @@
 namespace PHPMD\OXMD\Renderer;
 
 use PHPMD\AbstractRenderer;
+use PHPMD\OXMD\Certification\CertificationCost;
 use PHPMD\OXMD\Certification\ExtremeValue;
+use PHPMD\OXMD\Certification\ExtremeValues;
 use PHPMD\OXMD\Result\MetricExtremeValue;
-use PHPMD\OXMD\Rule\Coverage;
-use PHPMD\OXMD\Rule\CrapIndex;
-use PHPMD\OXMD\Rule\CyclomaticComplexity;
-use PHPMD\OXMD\Rule\NpathComplexity;
 use PHPMD\OXMD\Struct\Metric;
 use PHPMD\Report;
 use PHPMD\RuleViolation;
@@ -67,33 +65,19 @@ use PHPMD\RuleViolation;
 class TextRenderer extends AbstractRenderer
 {
     /**
-     * @var \PHPMD\OXMD\Certification\ExtremeValue
+     * @var \PHPMD\OXMD\Certification\CertificationCost
      */
-    private $ccn;
+    private $certificationCost;
 
     /**
-     * @var \PHPMD\OXMD\Certification\ExtremeValue
+     * @var \PHPMD\OXMD\Certification\ExtremeValues
      */
-    private $npath;
-
-    /**
-     * @var \PHPMD\OXMD\Certification\ExtremeValue
-     */
-    private $coverage;
-
-    /**
-     * @var \PHPMD\OXMD\Certification\ExtremeValue
-     */
-    private $crapIndex;
+    private $extremeValues;
 
     public function __construct()
     {
-        $this->ccn = new ExtremeValue\CyclomaticComplexity();
-        $this->npath = new ExtremeValue\NpathComplexity();
-        $this->coverage = new ExtremeValue\Coverage();
-        $this->crapIndex = new ExtremeValue\CrapIndex();
+        $this->certificationCost = new CertificationCost();
     }
-
 
     /**
      * This method will be called when the engine has finished the source analysis
@@ -104,16 +88,14 @@ class TextRenderer extends AbstractRenderer
      */
     public function renderReport(Report $report)
     {
+        $this->extremeValues = ExtremeValues::createFromViolations($report->getRuleViolations());
+
         $writer = $this->getWriter();
         $writer->write(PHP_EOL);
 
         foreach ($report->getRuleViolations() as $violation) {
-            $this->_extractMetric($violation);
-
             $this->renderLine('=');
-            $writer->write('FILE: ...' . substr($violation->getFileName(), -63, 63));
-            $writer->write(' (' . $violation->getBeginLine() . ')');
-            $writer->write(PHP_EOL);
+            $this->renderPath($violation->getFileName(), $violation->getBeginLine());
             $this->renderLine('=');
             $writer->write(wordwrap($violation->getDescription(), 80));
             $writer->write(PHP_EOL);
@@ -136,19 +118,19 @@ class TextRenderer extends AbstractRenderer
         $writer->write(PHP_EOL);
         $this->renderLine('=');
 
-        $this->renderExtremeValue('Code Coverage', $this->coverage);
+        $this->renderExtremeValue('Code Coverage', $this->extremeValues->getCoverage());
         $this->renderLine('-');
-        $this->renderExtremeValue('C.R.A.P Index', $this->crapIndex);
+        $this->renderExtremeValue('C.R.A.P Index', $this->extremeValues->getCrapIndex());
         $this->renderLine('-');
-        $this->renderExtremeValue('NPath Complexity', $this->npath);
+        $this->renderExtremeValue('NPath Complexity', $this->extremeValues->getNpath());
         $this->renderLine('-');
-        $this->renderExtremeValue('Cyclomatic Complexity', $this->ccn);
+        $this->renderExtremeValue('Cyclomatic Complexity', $this->extremeValues->getCcn());
 
-        $price = $this->_calculatePrice();
+        $price = $this->certificationCost->calculate($this->extremeValues);
 
         $this->renderLine('=');
         $writer->write(str_repeat(' ', 55) . 'Factor:  ');
-        $writer->write(sprintf('% 15s', number_format($this->_calculateFactor(), 2, ',', '.')));
+        $writer->write(sprintf('% 15s', number_format($this->extremeValues->calculateFactor(), 2, ',', '.')));
         $writer->write(PHP_EOL);
         $this->renderLine('=');
         $writer->write(str_repeat(' ', 55) . 'Price:   ');
@@ -166,48 +148,22 @@ class TextRenderer extends AbstractRenderer
         $writer->write(sprintf('% 7.2f', $extremeValue->getFactor()));
         $writer->write(PHP_EOL);
         foreach ($extremeValue->getFiles() as $file => $line) {
-
-            $writer->write($this->_getPathName($file, 64));
-            $writer->write(' (' . $line . ')');
-            $writer->write(PHP_EOL);
+            $this->renderPath($file, $line);
         }
+    }
+
+    private function renderPath($path, $line)
+    {
+        $path = "  {$path}";
+        if (strlen($path) + 4 > 64) {
+            $path = '  …' . substr($path, -1 * 64, 64);
+        }
+        $this->getWriter()->write(sprintf('%s (%d)%s', $path, $line, PHP_EOL));
     }
 
     private function renderLine($char)
     {
         $this->getWriter()->write(str_repeat($char, 80) . PHP_EOL);
-    }
-
-    /**
-     * Returns a shortened path name with a maximum of <b>$length</b>.
-     *
-     * @param string  $path   The raw input path.
-     * @param integer $length The maximum path length.
-     * 
-     * @return string
-     */
-    private function _getPathName($path, $length)
-    {
-        $path = "  {$path}";
-        if (strlen($path) + 4 <= $length) {
-            return $path;
-        }
-        return '  …' . substr($path, -1 * $length, $length);
-    }
-
-    /**
-     * Calclates the total factor/multiplier for the module costs.
-     *
-     * @return integer
-     */
-    private function _calculateFactor()
-    {
-        return (
-            $this->coverage->getFactor() *
-            $this->crapIndex->getFactor() *
-            $this->npath->getFactor() *
-            $this->ccn->getFactor()
-        );
     }
 
     /**
@@ -217,29 +173,6 @@ class TextRenderer extends AbstractRenderer
      */
     private function _calculatePrice()
     {
-        return 119 + ($this->_calculateFactor() * 200);
-    }
-
-    /**
-     * Extracts some additional data from the given rule violation.
-     *
-     * @param \PHPMD\RuleViolation $violation
-     * @return void
-     */
-    private function _extractMetric(RuleViolation $violation)
-    {
-        $rule = $violation->getRule();
-        if ($rule instanceof CyclomaticComplexity) {
-            $this->ccn->update($violation);
-        }
-        if ($rule instanceof NpathComplexity) {
-            $this->npath->update($violation);
-        }
-        if ($rule instanceof Coverage) {
-            $this->coverage->update($violation);
-        }
-        if ($rule instanceof CrapIndex) {
-            $this->crapIndex->update($violation);
-        }
+        return 119 + ($this->extremeValues->calculateFactor() * 200);
     }
 }

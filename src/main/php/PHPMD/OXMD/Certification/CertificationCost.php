@@ -42,38 +42,40 @@
  * @version   @project.version@
  */
 
-namespace PHPMD\OXMD\Certification\ExtremeValue;
-
-use PHPMD\OXMD\Certification\ExtremeValue;
+namespace PHPMD\OXMD\Certification;
 
 /**
- * This class encapsulates the NPath complexity extreme value and the
- * associated certification factor calculation.
+ * Encapsulates the certification cost calculation.
  *
  * @author    Manuel Pichler <mapi@phpmd.org>
  * @copyright 2014 Manuel Pichler. All rights reserved.
  * @license   http://www.opensource.org/licenses/bsd-license.php BSD License
  * @version   @project.version@
  */
-class NpathComplexity extends ExtremeValue
+class CertificationCost
 {
     /**
-     * Default CCN threshold as defined in the certification sheet.
+     * The certification base price.
+     *
+     * @var integer
      */
-    const DEFAULT_THRESHOLD = 200;
-
-    public function __construct($threshold = null)
-    {
-        parent::__construct(self::MEASURE_MAX, $threshold ?: self::DEFAULT_THRESHOLD);
-    }
+    private $basePrice = 119;
 
     /**
-     * Returns the factor used to calculate the certification costs.
+     * Price used to calculate the flexible part of the certification cost.
      *
-     * @return integer
+     * @var integer
      */
-    public function getFactor()
+    private $factorPrice = 200;
+
+    /**
+     * Calculates the certification cost based on the extreme values.
+     *
+     * @param \PHPMD\OXMD\Certification\ExtremeValues $extremeValues
+     * @return float
+     */
+    public function calculate(ExtremeValues $extremeValues)
     {
-        return max(1, ($this->getValue() - 100) / 100);
+        return $this->basePrice + ($extremeValues->calculateFactor() * $this->factorPrice);
     }
 }
