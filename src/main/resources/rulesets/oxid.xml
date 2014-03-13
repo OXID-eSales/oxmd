@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ruleset name="Oxid Certification Rules"
+         xmlns="http://pmd.sf.net/ruleset/1.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://pmd.sf.net/ruleset/1.0.0 http://pmd.sf.net/ruleset_xml_schema.xsd"
+         xsi:noNamespaceSchemaLocation="http://pmd.sf.net/ruleset_xml_schema.xsd">
+
+    <description>
+This rule set file contains the configuration for the Oxid Module Certification.
+    </description>
+
+    <rule name="CyclomaticComplexity"
+          since="0.1"
+          message = "Class {0} has an average method Cyclomatic Complexity of {1}, this metric should have a maximum of {2}."
+          class="PHPMD\OXMD\Rule\CyclomaticComplexity"
+          externalInfoUrl="http://phpmd.org/rules/codesize.html#cyclomaticcomplexity">
+        <description>
+            <![CDATA[
+Complexity is determined by the number of decision points in a method plus one for the
+method entry.  The decision points are 'if', 'while', 'for', and 'case labels'.  Generally,
+1-4 is low complexity, 5-7 indicates moderate complexity, 8-10 is high complexity,
+ and 11+ is very high complexity.
+            ]]>
+        </description>
+        <priority>3</priority>
+        <properties>
+            <property name="reportLevel" description="The Cyclomatic Complexity reporting threshold"  value="4"/>
+            <property name="showClassesComplexity"
+                      description="Indicate if class average violation should be added to the report"
+                      value="true"/>
+            <property name="showMethodsComplexity"
+                      description="Indicate if class average violation should be added to the report"
+                      value="true"/>
+        </properties>
+        <example />
+    </rule>
+
+    <rule name="NPathComplexity"
+          since="0.1"
+          message="The class {0} has an average method NPath Complexity of {1}, this metric should have a maximum of {2}."
+          class="PHPMD\OXMD\Rule\NpathComplexity"
+          externalInfoUrl="http://phpmd.org/rules/codesize.html#npathcomplexity">
+        <description>
+The NPath complexity of a method is the number of acyclic execution paths through that method.
+A threshold of 200 is generally considered the point where measures should be taken to reduce complexity.
+        </description>
+        <priority>3</priority>
+        <properties>
+            <property name="minimum" description="The npath reporting threshold" value="200"/>
+        </properties>
+        <example>
+            <![CDATA[
+class Foo {
+    function bar() {
+        // lots of complicated code
+    }
+}
+            ]]>
+        </example>
+    </rule>
+
+    <rule name="Coverage"
+          since="1.2.0"
+          message="Class {0} has an average method Code Coverage of {1}%, this metric should at least be a {2}%."
+          class="PHPMD\OXMD\Rule\Coverage"
+          externalInfoUrl="http://phpmd.org/rules/coverage.html#coverage">
+        <description>
+Checks the code coverage of methods and functions and tests the given value against
+the configured threshold.
+        </description>
+        <priority>3</priority>
+        <properties>
+            <property name="minimum" description="The minimum code coverage required." value="90"/>
+        </properties>
+        <example />
+    </rule>
+
+    <rule name="CrapIndex"
+          since="1.2.0"
+          message="Class {0} has an average method C.R.A.P. Index of {1}, this metric should have a maximum of {2}."
+          class="PHPMD\OXMD\Rule\CrapIndex"
+          externalInfoUrl="http://phpmd.org/rules/coverage.html#crapindex">
+        <description>
+Checks the crap index of methods and functions and tests the given value against
+the configured threshold.
+        </description>
+        <priority>3</priority>
+        <properties>
+            <property name="maximum" description="The maximum accepted crap index." value="30"/>
+        </properties>
+        <example />
+    </rule>
+
+</ruleset>
