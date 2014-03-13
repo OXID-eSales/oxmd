@@ -9,6 +9,10 @@
         "pdepend/pdepend": "dev-master"
     },
 
+    "require-dev": {
+        "phpunit/phpunit": "@stable"
+    },
+
     "autoload": {
         "psr-0": {
             "PHPMD\\OXMD": "src/main/php/"
