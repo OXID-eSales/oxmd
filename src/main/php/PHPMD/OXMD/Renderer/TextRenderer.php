@@ -165,14 +165,4 @@ class TextRenderer extends AbstractRenderer
     {
         $this->getWriter()->write(str_repeat($char, 80) . PHP_EOL);
     }
-
-    /**
-     * Total price for the currently analyzed module.
-     * 
-     * @return float
-     */
-    private function _calculatePrice()
-    {
-        return 119 + ($this->extremeValues->calculateFactor() * 200);
-    }
 }

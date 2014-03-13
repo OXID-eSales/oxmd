@@ -62,15 +62,12 @@ class CommandLineOptions extends \PHPMD\TextUI\CommandLineOptions
      * Constructs a new command line options instance.
      *
      * @param array $args
-     * @param array $availableRuleSets
      * @throws \InvalidArgumentException
      */
-    public function __construct(array $args, array $availableRuleSets = array())
+    public function __construct(array $args)
     {
         // Remove current file name
         array_shift($args);
-
-        $this->availableRuleSets = $availableRuleSets;
 
         $arguments = array();
         while (($arg = array_shift($args)) !== null) {

@@ -67,14 +67,12 @@ class Command extends \PHPMD\TextUI\Command
     public static function main(array $args)
     {
         try {
-            $ruleSetFactory = new RuleSetFactory();
-            $options = new CommandLineOptions($args, $ruleSetFactory->listAvailableRuleSets());
+            $options = new CommandLineOptions($args);
             $command = new Command();
 
-            $exitCode = $command->run($options, $ruleSetFactory);
+            $exitCode = $command->run($options, new RuleSetFactory());
         } catch (\Exception $e) {
-            fwrite(STDERR, $e->getMessage());
-            fwrite(STDERR, PHP_EOL);
+            fwrite(STDERR, $e->getMessage() . PHP_EOL);
 
             $exitCode = self::EXIT_EXCEPTION;
         }
