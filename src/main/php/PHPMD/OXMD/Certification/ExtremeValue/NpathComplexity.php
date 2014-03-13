@@ -58,7 +58,7 @@ use PHPMD\OXMD\Certification\ExtremeValue;
 class NpathComplexity extends ExtremeValue
 {
     /**
-     * Default CCN threshold as defined in the certification sheet.
+     * Default NPath complexity threshold as defined in the certification sheet.
      */
     const DEFAULT_THRESHOLD = 200;
 

@@ -58,7 +58,7 @@ use PHPMD\OXMD\Certification\ExtremeValue;
 class CrapIndex extends ExtremeValue
 {
     /**
-     * Default code coverage threshold as defined in the certification sheet.
+     * Default crap index threshold as defined in the certification sheet.
      */
     const DEFAULT_THRESHOLD = 30;
 
