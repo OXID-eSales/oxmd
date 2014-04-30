@@ -45,6 +45,7 @@
 namespace PHPMD\OXMD\TextUI;
 
 use PHPMD\OXMD\Renderer\TextRenderer;
+use PHPMD\OXMD\Renderer\XmlRenderer;
 use PHPMD\Rule;
 
 /**
@@ -129,6 +130,14 @@ class CommandLineOptions extends \PHPMD\TextUI\CommandLineOptions
     protected function createTextRenderer()
     {
         return new TextRenderer();
+    }
+
+    /**
+     * @return \PHPMD\Renderer\TextRenderer
+     */
+    protected function createXmlRenderer()
+    {
+        return new XmlRenderer();
     }
 
     /**

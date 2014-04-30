@@ -147,8 +147,8 @@ class TextRenderer extends AbstractRenderer
         $writer->write('                 ');
         $writer->write(sprintf('% 7.2f', $extremeValue->getFactor()));
         $writer->write(PHP_EOL);
-        foreach ($extremeValue->getFiles() as $file => $line) {
-            $this->renderPath($file, $line);
+        foreach ($extremeValue->getViolations() as $violation) {
+            $this->renderPath($violation->getFileName(), $violation->getBeginLine());
         }
     }
 

@@ -81,11 +81,9 @@ abstract class ExtremeValue
     private $value;
 
     /**
-     * The files where this metric was measured.
-     *
-     * @var array
+     * @var \PHPMD\RuleViolation[]
      */
-    private $files = array();
+    private $violations = array();
 
     /**
      * The threshold when the metric value has an impact on the factor calculation.
@@ -106,14 +104,11 @@ abstract class ExtremeValue
     }
 
     /**
-     * Returns an array with all affected files as key an the corresponding line
-     * number as value.
-     *
-     * @return array
+     * @return \PHPMD\RuleViolation[]
      */
-    public function getFiles()
+    public function getViolations()
     {
-        return $this->files;
+        return $this->violations;
     }
 
     /**
@@ -127,7 +122,7 @@ abstract class ExtremeValue
     /**
      * @return mixed
      */
-    protected function getThreshold()
+    public function getThreshold()
     {
         return $this->threshold;
     }
@@ -158,7 +153,7 @@ abstract class ExtremeValue
         }
 
         $this->value = $violation->getMetric();
-        $this->files[$violation->getFileName()] = $violation->getBeginLine();
+        $this->violations[] = $violation;
     }
 
     private function updateMin(RuleViolation $violation)
@@ -171,7 +166,7 @@ abstract class ExtremeValue
         }
 
         $this->value = $violation->getMetric();
-        $this->files[$violation->getFileName()] = $violation->getBeginLine();
+        $this->violations[] = $violation;
     }
 
     /**
