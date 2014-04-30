@@ -48,7 +48,6 @@ namespace PHPMD\OXMD\Rule;
 use PHPMD\AbstractNode;
 use PHPMD\AbstractRule;
 use PHPMD\Node\ClassNode;
-use PHPMD\Rule\ClassAware;
 use PHPMD\Rule\MethodAware;
 
 /**
@@ -61,23 +60,8 @@ use PHPMD\Rule\MethodAware;
  * @license   http://www.opensource.org/licenses/bsd-license.php BSD License
  * @version   @project.version@
  */
-class Coverage extends AbstractRule implements ClassAware, MethodAware
+class Coverage extends AbstractRule implements MethodAware
 {
-    /**
-     * @var array
-     */
-    protected $classes = array();
-
-    /**
-     * @var float
-     */
-    protected $coverage = 0;
-
-    /**
-     * @var int
-     */
-    protected $count = 0;
-
     /**
      * Tests the code coverage of the given node instance against the configured
      * minimum threshold.
@@ -87,6 +71,22 @@ class Coverage extends AbstractRule implements ClassAware, MethodAware
      */
     public function apply(AbstractNode $node)
     {
+        if ($node->getMetric('cov') >= $this->getIntProperty('minimum')) {
+            return;
+        }
+
+        $this->addViolation(
+            $node,
+            array(
+                $node->getParentName(),
+                $node->getName(),
+                round($node->getMetric('cov'), 2),
+                $this->getIntProperty('minimum')
+            ),
+            $node->getMetric('cov')
+        );
+
+        /* @deprecated average calculation
         if ($node instanceof ClassNode) {
             $this->classes[$node->getName()]  = array_flip($node->getMethodNames());
 
@@ -120,5 +120,6 @@ class Coverage extends AbstractRule implements ClassAware, MethodAware
                 $coverage
             );
         }
+        */
     }
 }

@@ -61,7 +61,7 @@ class Foo {
 
     <rule name="Coverage"
           since="1.2.0"
-          message="Class {0} has an average method Code Coverage of {1}%, this metric should at least be a {2}%."
+          message="Method {0}::{1} has a Code Coverage of {2}%, this metric should at least be a {3}%."
           class="PHPMD\OXMD\Rule\Coverage"
           externalInfoUrl="http://phpmd.org/rules/coverage.html#coverage">
         <description>
