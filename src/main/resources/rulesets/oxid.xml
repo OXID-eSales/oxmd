@@ -37,7 +37,7 @@ method entry.  The decision points are 'if', 'while', 'for', and 'case labels'. 
 
     <rule name="NPathComplexity"
           since="0.1"
-          message="The class {0} has an average method NPath Complexity of {1}, this metric should have a maximum of {2}."
+          message="Method {0}::{1}() has a NPath Complexity of {2}, this metric should have a maximum of {3}."
           class="PHPMD\OXMD\Rule\NpathComplexity"
           externalInfoUrl="http://phpmd.org/rules/codesize.html#npathcomplexity">
         <description>

@@ -60,23 +60,8 @@ use PHPMD\Rule\MethodAware;
  * @license   http://www.opensource.org/licenses/bsd-license.php BSD License
  * @version   @project.version@
  */
-class NpathComplexity extends AbstractRule implements ClassAware, MethodAware
+class NpathComplexity extends AbstractRule implements MethodAware
 {
-    /**
-     * @var array
-     */
-    protected $classes = array();
-
-    /**
-     * @var float
-     */
-    protected $npath = 0;
-
-    /**
-     * @var int
-     */
-    protected $count = 0;
-
     /**
      * This method checks the acyclic complexity for the given node against a
      * configured threshold.
@@ -86,6 +71,22 @@ class NpathComplexity extends AbstractRule implements ClassAware, MethodAware
      */
     public function apply(AbstractNode $node)
     {
+        if ($node->getMetric('npath') < $this->getIntProperty('minimum')) {
+            return;
+        }
+
+        $this->addViolation(
+            $node->getParentType(),
+            array(
+                $node->getParentName(),
+                $node->getName(),
+                $node->getMetric('npath'),
+                $this->getIntProperty('minimum')
+            ),
+            $node->getMetric('npath')
+        );
+
+        /* @deprecated average calculation
         if ($node instanceof ClassNode) {
             $this->classes[$node->getName()]  = array_flip($node->getMethodNames());
 
@@ -120,5 +121,6 @@ class NpathComplexity extends AbstractRule implements ClassAware, MethodAware
             ),
             $npath
         );
+        */
     }
 }
