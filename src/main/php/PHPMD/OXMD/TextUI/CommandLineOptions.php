@@ -148,7 +148,7 @@ class CommandLineOptions extends \PHPMD\TextUI\CommandLineOptions
                '   command line option --coverage-clover' . PHP_EOL .
                '3) Optional report format' .
                PHP_EOL . PHP_EOL .
-               'Available formats: xml, text, html.' .
+               'Available formats: xml, text' .
                PHP_EOL . PHP_EOL .
                'Optional arguments that may be put after the mandatory arguments:' . PHP_EOL .
                '--minimumpriority: rule priority threshold; rules with lower priority' . PHP_EOL .
