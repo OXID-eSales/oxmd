@@ -88,6 +88,22 @@ class CrapIndex extends AbstractRule implements ClassAware, MethodAware
      */
     public function apply(AbstractNode $node)
     {
+        if ($node->getMetric('crap') <= $this->getIntProperty('maximum')) {
+            return;
+        }
+
+        $this->addViolation(
+            $node,
+            array(
+                $node->getParentName(),
+                $node->getName(),
+                round($node->getMetric('crap'), 2),
+                $this->getIntProperty('maximum')
+            ),
+            $node->getMetric('crap')
+        );
+
+        /* @deprecated average calculation
         if ($node instanceof ClassNode) {
             $this->classes[$node->getName()]  = array_flip($node->getMethodNames());
 
@@ -120,5 +136,6 @@ class CrapIndex extends AbstractRule implements ClassAware, MethodAware
                 $crap
             );
         }
+        */
     }
 }
