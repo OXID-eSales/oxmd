@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "c41976472aaae81c0b4d70c10a9cd3e2",
+    "hash": "b0be37135abcab2930d39c5ebb38fb1c",
     "packages": [
         {
             "name": "pdepend/pdepend",
@@ -55,12 +55,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpmd/phpmd.git",
-                "reference": "61bbc40c024eff6fde977f0ff001977cdfa795d6"
+                "reference": "168ae4108aba73c5d42c2a989fc3c7cf9bb81da3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpmd/phpmd/zipball/61bbc40c024eff6fde977f0ff001977cdfa795d6",
-                "reference": "61bbc40c024eff6fde977f0ff001977cdfa795d6",
+                "url": "https://api.github.com/repos/phpmd/phpmd/zipball/168ae4108aba73c5d42c2a989fc3c7cf9bb81da3",
+                "reference": "168ae4108aba73c5d42c2a989fc3c7cf9bb81da3",
                 "shasum": ""
             },
             "require": {
@@ -94,7 +94,7 @@
                 "BSD-3-Clause"
             ],
             "description": "Official version of PHPMD handled with Composer.",
-            "time": "2014-04-30 09:22:16"
+            "time": "2014-04-30 11:30:12"
         },
         {
             "name": "symfony/config",

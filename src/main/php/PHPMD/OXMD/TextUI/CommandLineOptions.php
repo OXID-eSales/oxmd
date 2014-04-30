@@ -82,6 +82,10 @@ class CommandLineOptions extends \PHPMD\TextUI\CommandLineOptions
                     $this->reportFile = array_shift($args);
                     break;
 
+                case (preg_match('(^--reportfile-(xml|text)$)', $arg, $match) > 0):
+                    $this->reportFiles[$match[1]] = array_shift($args);
+                    break;
+
                 case '--inputfile':
                     array_unshift($arguments, $this->readInputFile(array_shift($args)));
                     break;
@@ -163,6 +167,8 @@ class CommandLineOptions extends \PHPMD\TextUI\CommandLineOptions
                '--minimumpriority: rule priority threshold; rules with lower priority' . PHP_EOL .
                '                   than this will not be used' . PHP_EOL .
                '--reportfile:      send report output to a file; default to STDOUT' . PHP_EOL .
+               '--reportfile-text: send text report output to a file' . PHP_EOL .
+               '--reportfile-xml:  send xml report output to a file' . PHP_EOL .
                '--suffixes:        comma-separated string of valid source code filename ' . PHP_EOL .
                '                   extensions' . PHP_EOL .
                '--exclude:         comma-separated string of patterns that are used to ' . PHP_EOL .
