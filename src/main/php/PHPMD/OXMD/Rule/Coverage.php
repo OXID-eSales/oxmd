@@ -47,7 +47,6 @@ namespace PHPMD\OXMD\Rule;
 
 use PHPMD\AbstractNode;
 use PHPMD\AbstractRule;
-use PHPMD\Node\ClassNode;
 use PHPMD\Rule\MethodAware;
 
 /**

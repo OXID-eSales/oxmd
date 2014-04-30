@@ -46,9 +46,6 @@ namespace PHPMD\OXMD\Rule;
 
 use PHPMD\AbstractNode;
 use PHPMD\AbstractRule;
-use PHPMD\Node\ClassNode;
-use PHPMD\Node\InterfaceNode;
-use PHPMD\Rule\ClassAware;
 use PHPMD\Rule\MethodAware;
 
 /**
@@ -71,7 +68,7 @@ class CyclomaticComplexity extends AbstractRule implements MethodAware
      */
     public function apply(AbstractNode $node)
     {
-        if ($node->getMetric('ccn2') < $this->getIntProperty('reportLevel')) {
+        if ($node->getMetric('ccn2') <= $this->getIntProperty('maximum')) {
             return;
         }
 
@@ -81,7 +78,7 @@ class CyclomaticComplexity extends AbstractRule implements MethodAware
                 $node->getParentName(),
                 $node->getName(),
                 $node->getMetric('ccn2'),
-                $this->getIntProperty('reportLevel')
+                $this->getIntProperty('maximum')
             ),
             $node->getMetric('ccn2')
         );

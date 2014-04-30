@@ -47,9 +47,6 @@ namespace PHPMD\OXMD\Rule;
 
 use PHPMD\AbstractNode;
 use PHPMD\AbstractRule;
-use PHPMD\Node\ClassNode;
-use PHPMD\Node\InterfaceNode;
-use PHPMD\Rule\ClassAware;
 use PHPMD\Rule\MethodAware;
 
 /**
@@ -62,23 +59,8 @@ use PHPMD\Rule\MethodAware;
  * @license   http://www.opensource.org/licenses/bsd-license.php BSD License
  * @version   @project.version@
  */
-class CrapIndex extends AbstractRule implements ClassAware, MethodAware
+class CrapIndex extends AbstractRule implements MethodAware
 {
-    /**
-     * @var array
-     */
-    protected $classes = array();
-
-    /**
-     * @var float
-     */
-    protected $crap = 0;
-
-    /**
-     * @var int
-     */
-    protected $count = 0;
-
     /**
      * This method tests the C.R.A.P. Index of the given node against the
      * configured maximum threshold.
