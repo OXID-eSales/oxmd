@@ -2,6 +2,7 @@
     "name": "phpmd/oxmd",
     "description": "Official PHPMD OXID extension.",
     "license": "BSD-3-Clause",
+    "version": "1.0.0",
 
     "require": {
         "php": ">=5.3.0",

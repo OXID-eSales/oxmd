@@ -48,6 +48,7 @@ use PHPMD\AbstractRenderer;
 use PHPMD\OXMD\Certification\CertificationCost;
 use PHPMD\OXMD\Certification\ExtremeValue;
 use PHPMD\OXMD\Certification\ExtremeValues;
+use PHPMD\OXMD\Version;
 use PHPMD\PHPMD;
 use PHPMD\Report;
 
@@ -108,7 +109,10 @@ class XmlRenderer extends AbstractRenderer
         $this->extremeValues = ExtremeValues::createFromViolations($report->getRuleViolations());
 
         $writer = $this->getWriter();
-        $writer->write('<pmd version="' . PHPMD::VERSION . '" ');
+        $writer->write('<pmd ');
+        $writer->write('xmlns:oxid="http://wiki.oxidforge.org/Certification/Modules" ');
+        $writer->write('oxid:version="' . Version::getOxmdVersion() . '" ');
+        $writer->write('version="' . Version::getPhpmdVersion() . '" ');
         $writer->write('timestamp="' . date('c') . '">');
         $writer->write(PHP_EOL);
 
@@ -164,7 +168,7 @@ class XmlRenderer extends AbstractRenderer
 
         if ($this->extremeValues->calculateFactor() > 1.0) {
             $writer->write(PHP_EOL);
-            $writer->write('  <oxmd:certification factor="');
+            $writer->write('  <oxid:certification factor="');
             $writer->write($this->extremeValues->calculateFactor());
             $writer->write('" price="');
             $writer->write($this->certificationCost->calculate($this->extremeValues));
@@ -175,7 +179,7 @@ class XmlRenderer extends AbstractRenderer
             $this->renderExtremeValue('NPath Complexity', $this->extremeValues->getNpath());
             $this->renderExtremeValue('Cyclomatic Complexity', $this->extremeValues->getCcn());
 
-            $writer->write('  </oxmd:certification>' . PHP_EOL);
+            $writer->write('  </oxid:certification>' . PHP_EOL);
         }
 
         $writer->write('</pmd>' . PHP_EOL);
@@ -185,7 +189,7 @@ class XmlRenderer extends AbstractRenderer
     {
         $writer = $this->getWriter();
 
-        $writer->write('    <oxmd:rule');
+        $writer->write('    <oxid:rule');
         $this->maybeAdd('name', $label);
         $this->maybeAdd('threshold', $extremeValue->getThreshold());
         $this->maybeAdd('value', $extremeValue->getValue());
@@ -194,7 +198,7 @@ class XmlRenderer extends AbstractRenderer
         $writer->write('>' . PHP_EOL);
 
         foreach ($extremeValue->getViolations() as $violation) {
-            $writer->write('      <oxmd:file');
+            $writer->write('      <oxid:file');
             $this->maybeAdd('path', $violation->getFileName());
             $this->maybeAdd('line', $violation->getBeginLine());
             $this->maybeAdd('namespace', $violation->getNamespaceName());
@@ -203,7 +207,7 @@ class XmlRenderer extends AbstractRenderer
             $writer->write(' />' . PHP_EOL);
         }
 
-        $writer->write('    </oxmd:rule>' . PHP_EOL);
+        $writer->write('    </oxid:rule>' . PHP_EOL);
     }
 
     /**
