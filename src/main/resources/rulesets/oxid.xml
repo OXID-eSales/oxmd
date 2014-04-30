@@ -11,7 +11,7 @@ This rule set file contains the configuration for the Oxid Module Certification.
 
     <rule name="CyclomaticComplexity"
           since="0.1"
-          message = "Class {0} has an average method Cyclomatic Complexity of {1}, this metric should have a maximum of {2}."
+          message = "Method {0}::{1}() has a Cyclomatic Complexity of {2}, this metric should have a maximum of {3}."
           class="PHPMD\OXMD\Rule\CyclomaticComplexity"
           externalInfoUrl="http://phpmd.org/rules/codesize.html#cyclomaticcomplexity">
         <description>

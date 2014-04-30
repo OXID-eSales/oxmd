@@ -60,23 +60,8 @@ use PHPMD\Rule\MethodAware;
  * @license   http://www.opensource.org/licenses/bsd-license.php BSD License
  * @version   @project.version@
  */
-class CyclomaticComplexity extends AbstractRule implements ClassAware, MethodAware
+class CyclomaticComplexity extends AbstractRule implements MethodAware
 {
-    /**
-     * @var array
-     */
-    protected $classes = array();
-
-    /**
-     * @var float
-     */
-    protected $ccn = 0;
-
-    /**
-     * @var int
-     */
-    protected $count = 0;
-    
     /**
      * This method checks the cyclomatic complexity for the given node against
      * a configured threshold.
@@ -86,6 +71,22 @@ class CyclomaticComplexity extends AbstractRule implements ClassAware, MethodAwa
      */
     public function apply(AbstractNode $node)
     {
+        if ($node->getMetric('ccn2') < $this->getIntProperty('reportLevel')) {
+            return;
+        }
+
+        $this->addViolation(
+            $node->getParentType(),
+            array(
+                $node->getParentName(),
+                $node->getName(),
+                $node->getMetric('ccn2'),
+                $this->getIntProperty('reportLevel')
+            ),
+            $node->getMetric('ccn2')
+        );
+
+        /* @deprecated average calculation
         if ($node instanceof ClassNode) {
             $this->classes[$node->getName()]  = array_flip($node->getMethodNames());
 
@@ -120,5 +121,6 @@ class CyclomaticComplexity extends AbstractRule implements ClassAware, MethodAwa
             ),
             $ccn
         );
+        */
     }
 }
