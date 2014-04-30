@@ -76,7 +76,7 @@ class NpathComplexity extends AbstractRule implements MethodAware
         }
 
         $this->addViolation(
-            $node->getParentType(),
+            $node,
             array(
                 $node->getParentName(),
                 $node->getName(),
