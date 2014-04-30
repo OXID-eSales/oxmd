@@ -74,10 +74,6 @@ class CommandLineOptions extends \PHPMD\TextUI\CommandLineOptions
         while (($arg = array_shift($args)) !== null) {
             switch ($arg) {
 
-                case '--minimumpriority':
-                    $this->minimumPriority = (int) array_shift($args);
-                    break;
-
                 case '--reportfile':
                     $this->reportFile = array_shift($args);
                     break;
@@ -88,10 +84,6 @@ class CommandLineOptions extends \PHPMD\TextUI\CommandLineOptions
 
                 case '--inputfile':
                     array_unshift($arguments, $this->readInputFile(array_shift($args)));
-                    break;
-
-                case '--coverage':
-                    $this->coverageReport = array_shift($args);
                     break;
 
                 case '--suffixes':
@@ -106,10 +98,6 @@ class CommandLineOptions extends \PHPMD\TextUI\CommandLineOptions
                     $this->version = true;
                     return;
 
-                case '--strict':
-                    $this->strict = true;
-                    break;
-
                 default:
                     $arguments[] = $arg;
                     break;
@@ -122,6 +110,7 @@ class CommandLineOptions extends \PHPMD\TextUI\CommandLineOptions
 
         $arguments = array_pad($arguments, 3, null);
 
+        $this->strict         = true;
         $this->inputPath      = $arguments[0];
         $this->coverageReport = $arguments[1];
         $this->reportFormat   = $arguments[2] ?: 'text';
@@ -164,16 +153,12 @@ class CommandLineOptions extends \PHPMD\TextUI\CommandLineOptions
                'Available formats: xml, text' .
                PHP_EOL . PHP_EOL .
                'Optional arguments that may be put after the mandatory arguments:' . PHP_EOL .
-               '--minimumpriority: rule priority threshold; rules with lower priority' . PHP_EOL .
-               '                   than this will not be used' . PHP_EOL .
                '--reportfile:      send report output to a file; default to STDOUT' . PHP_EOL .
                '--reportfile-text: send text report output to a file' . PHP_EOL .
                '--reportfile-xml:  send xml report output to a file' . PHP_EOL .
                '--suffixes:        comma-separated string of valid source code filename ' . PHP_EOL .
                '                   extensions' . PHP_EOL .
                '--exclude:         comma-separated string of patterns that are used to ' . PHP_EOL .
-               '                   ignore directories' . PHP_EOL .
-               '--strict:          also report those nodes with a @SuppressWarnings ' . PHP_EOL .
-               '                   annotation' . PHP_EOL;
+               '                   ignore directories' . PHP_EOL;
     }
 }
