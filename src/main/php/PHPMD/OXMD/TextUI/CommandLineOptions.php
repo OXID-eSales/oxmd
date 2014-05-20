@@ -143,13 +143,6 @@ class CommandLineOptions extends \PHPMD\TextUI\CommandLineOptions
         return 'Usage:' . PHP_EOL .
                '  oxmd /path/to/src /path/to/clover.xml [report-format]' .
                PHP_EOL . PHP_EOL .
-               'Arguments:' . PHP_EOL .
-               '1) A php source code filename or directory. This argument can be' . PHP_EOL .
-               '   a comma-separated string' . PHP_EOL .
-               '2) The PHPUnit code coverage report generated with PHPUnit\'s' . PHP_EOL .
-               '   command line option --coverage-clover' . PHP_EOL .
-               '3) Optional report format' .
-               PHP_EOL . PHP_EOL .
                'Available formats: xml, text' .
                PHP_EOL . PHP_EOL .
                'Optional arguments that may be put after the mandatory arguments:' . PHP_EOL .
