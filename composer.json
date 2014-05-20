@@ -20,6 +20,8 @@
         }
     },
 
-    "bin": ["src/bin/oxmd"]
+    "bin": ["src/bin/oxmd"],
+
+    "minimum-stability" : "dev"
 }
 
