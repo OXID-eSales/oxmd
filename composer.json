@@ -6,8 +6,7 @@
 
     "require": {
         "php": ">=5.3.0",
-        "phpmd/phpmd": "@dev",
-        "pdepend/pdepend": "@dev"
+        "phpmd/phpmd": "2.0.*"
     },
 
     "require-dev": {
@@ -20,8 +19,6 @@
         }
     },
 
-    "bin": ["src/bin/oxmd"],
-
-    "minimum-stability" : "dev"
+    "bin": ["src/bin/oxmd"]
 }
 
