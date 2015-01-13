@@ -10,7 +10,7 @@ Installation
 
 * Install PHP with XDebug
 * [Install composer](https://getcomposer.org/doc/00-intro.md#installation-nix)
-* Run `composer.phar create-project phpmd/oxmd`
+* Run `php composer.phar create-project phpmd/oxmd`
 
 Run
 ---
