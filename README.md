@@ -17,8 +17,3 @@ Run
 
 * Run the unit tests of your module and make sure you generate a clover coverage report with the `--coverage-clover` option
 * In the OXMD directory run `src/bin/oxmd`, it will show you the available options.
-
-License
--------
-
-OXMD is licensed under the BSD-3-Clause.
